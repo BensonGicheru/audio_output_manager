@@ -18,7 +18,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterAudioManagerPlugin */
 public class FlutterAudioManagerPlugin implements FlutterPlugin, MethodCallHandler {
@@ -33,16 +32,6 @@ public class FlutterAudioManagerPlugin implements FlutterPlugin, MethodCallHandl
     AudioChangeReceiver receiver = new AudioChangeReceiver(listener);
     IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
     activeContext = flutterPluginBinding.getApplicationContext();
-    activeContext.registerReceiver(receiver, filter);
-    audioManager = (AudioManager) activeContext.getSystemService(Context.AUDIO_SERVICE);
-  }
-
-  public static void registerWith(Registrar registrar) {
-    channel = new MethodChannel(registrar.messenger(), "audio_output_manager");
-    channel.setMethodCallHandler(new FlutterAudioManagerPlugin());
-    AudioChangeReceiver receiver = new AudioChangeReceiver(listener);
-    IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-    activeContext = registrar.activeContext();
     activeContext.registerReceiver(receiver, filter);
     audioManager = (AudioManager) activeContext.getSystemService(Context.AUDIO_SERVICE);
   }
